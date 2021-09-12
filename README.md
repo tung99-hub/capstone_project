@@ -6,6 +6,13 @@ To achieve this, an external table containing information about NTA zones and co
 
 The goal of this project is to investigate factors leading to the taxi trips around NYC, with the first and foremost element being the weather. For example, one can train a Machine Learning model to try to gauge how much impact air temperature has on people's tendency to choose taxi as their transportation. Looking into the future, information such as average salary or number of cars per household can further reinforce the connections.
 
+## Files in this directory
+- ```cfg```: Folder containing all configuration files
+- ```data```: Folder containing the data along with the data dictionary
+- ```md_resources```: Folder containing the resources necessary to populate this README
+- ```python_modules```: Folder containing the Python functions used to run the Notebook
+- ```capstone.ipynb```: Notebook with the main data pipeline
+
 ## Technologies used
 
 The main technology of choice here is Spark on Python (using the Pyspark library). Spark provides an excellent infrastructure to process the large amount of data (having over 1 million rows), with an added benefit of being able to use the familiar SQL to work around with the data.
@@ -24,15 +31,15 @@ Data used in this project was taken from the following sources:
 ## Data model
 The whole database follows a star schema, which can be viewed in the ```schema.jpg``` file, or down below:
 
-![Schema](./schema.jpg)
+![Schema](./md_resources/schema.jpg)
 
-There are 2 fact tables in total, namely ```trips``` and ```temperatures```, and 2 supporting dimension tables: ```locations``` and ```times```.
+There are 2 fact tables in total, namely ```trips``` and ```temperatures```, and 2 supporting dimension tables: ```locations``` and ```times```. This schema requires less storage space than the other schemas, with a trade-off of having to do multiple ```JOIN``` operations. However, as there are more than one fact table present, we are in a situation where doing ```JOIN``` is inevitable. Therefore, it would be best to capitalize on the low storage that star schemas offer.
 
 ## Data pipeline
 
 The image below shows the simplified pipeline for processing the data:
 
-![Pipeline](./data_pipeline.png)
+![Pipeline](./md_resources/data_pipeline.png)
 
 While this current data pipeline is quite limited, it can easily be expanded by further uploading the completed table to a cloud data warehouse such as Amazon Redshift.
 Meanwhile, Airflow can be used to orchestrate the full pipeline, allowing us to start the whole process using just a few mouse clicks. While Jupyter Notebook can accomplish the same goal, it lacks the ability to set a running schedule and backfill. If Airflow were to be used, then data should be updated once every month, given the fact that NYC taxi data comes in one month at a time, making backfilling a lot more convenient this way.
